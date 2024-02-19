@@ -1,12 +1,12 @@
 // console.log("Camila Aviles Vargas");
 // console.log(process.argv)
 
-const fs = require("fs"); // Siempre hasta arriba, sin nada antes (ni comentarios)
+// const fs = require("fs"); // Siempre hasta arriba, sin nada antes (ni comentarios)
 const JSON_FILE = "books.json";
 
 import fs from "fs";
 
-export const readJson = (jsonPath) => {
+export const readFile = (jsonPath) => {
     try {
         const jsonData = fs.readFileSync(jsonPath); //Leer archivo
         const data = JSON.parse (jsonData); //parse lo convierte a json ya que lo lee como string
@@ -16,9 +16,9 @@ export const readJson = (jsonPath) => {
         console.log(error);
     }
 }
-console.log(readJson("books.json"));
 
-export const updateJson = (newData, jsonPath) => {
+
+export const updateFile = (newData, jsonPath) => {
     try {
         //const jsonData = fs.readFileSync(jsonPath); //Leer archivo JSON
         const data = JSON.stringify (newData)
@@ -30,7 +30,7 @@ export const updateJson = (newData, jsonPath) => {
     }
 }
 
-console.log(updateJson([], "books-test.json"))
+console.log(updateFile([], "books-test.json"))
 
 
 
