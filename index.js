@@ -1,9 +1,9 @@
-import { readFile, updateFile, sendResponse } from "./fileUtils.js";
+import { readFile, updateFile } from "./fileUtils.js";
 
 // getBook
 const getBook = (titleOrISBN) => {
   try {
-    const books = readFile("books-test.json");
+    const books = readFile("books.json");
 
     const book = books.find(
       (currentBook) =>
@@ -41,7 +41,7 @@ const addBook = (title, ISBN, year, genre, author, stock, publisher) => {
     } else {
       const newBook = { "title": title, "ISBN": ISBN, "year": year, "genre": genre, "author": author, "stock": stock, "publisher": publisher };
       books.push(newBook);
-      updateFile("books.json", books);
+      updateFile(books, "books.json");
       console.log("New book added:", newBook);
       return sendResponse(200, newBook);
     }
@@ -56,11 +56,14 @@ const removeBookByTitleOrISBN = (titleOrISBN) => {
   try {
     let books = readFile("books.json");
     const index = books.findIndex(book => book.title === titleOrISBN || book.ISBN === titleOrISBN);
+    const deletedBook = books[index]
     if (index !== -1) {
-      const deletedBook = books.splice(index, 1)[0];
-      updateFile("books.json", books);
+      
+      const newBook = [...books]
+      newBook.splice(index, 1)[0];
+      updateFile(newBook, "books.json");
       console.log("Book removed successfully:", deletedBook);
-      return sendResponse(200, { deletedBook, books });
+      return sendResponse(200, { newBook });
     } else {
       console.log("Book not found");
       return sendResponse(404);
@@ -72,10 +75,10 @@ const removeBookByTitleOrISBN = (titleOrISBN) => {
 };
 
 // filterBy
-const filterBy = (property, value) => {
+const filterBy = (genre) => {
   try {
     const books = readFile("books.json");
-    const filteredBooks = books.filter(book => book[property] === value);
+    const filteredBooks = books.filter((book) => book.genre === genre);
     return sendResponse(200, filteredBooks);
   } catch (error) {
     console.error("Error:", error);
@@ -168,24 +171,71 @@ const updateBookTitle = (isbn, title) => {
   }
 };
 
+
+const sendResponse = (code, body = null) => {
+  const response = {
+      code,
+      body,
+  };
+
+  switch (code) {
+      case 200:
+          response.msg = "Ok";
+          break;
+      case 201:
+          response.msg = "Created";
+          break;
+      case 400:
+          response.msg = "Endpoint not valid";
+          break;
+      case 404:
+          response.msg = "Not found";
+          break;
+      case 500:
+          response.msg = "Internal Server Error";
+          break;
+      case 204:
+          response.msg = "No content";
+          break;
+      default:
+          response.msg = "Unknown status code";
+  }
+
+  return response;
+};
+
+
+
 function main() {
   const args = process.argv.slice(2);
 
   const endpoint = args[0];
 
   switch (endpoint) {
+    case "addBook":
+      const addTitle = args[1];
+      const addISBN = args[2];
+      const addYear = parseInt(args[3]);
+      const addGenre = args[4];
+      const addAuthor = args[5];
+      const addStock = parseInt(args[6]);
+      const addPublisher = args[7];
+      console.log(addBook(addTitle, addISBN, addYear, addGenre, addAuthor, addStock, addPublisher));
+      break;
     case "getBook":
       const titleOrISBN = args[1];
       console.log(getBook(titleOrISBN));
+      break;
+    case "getBooks":
+      console.log(getBooks());
       break;
     case "removeBookByTitleOrISBN":
       const titleOrISBNToRemove = args[1];
       console.log(removeBookByTitleOrISBN(titleOrISBNToRemove));
       break;
     case "filterBy":
-      const property = args[1];
-      const value = args[2];
-      console.log(filterBy(property, value));
+      const filterGenre = args[1];
+      console.log(filterBy(filterGenre));
       break;
     case "listBooks":
       console.log(listBooks());
@@ -195,12 +245,12 @@ function main() {
       console.log(getBooksByYear(year));
       break;
     case "genreFullAvailability":
-      const genreFull = args[1];
-      console.log(genreFullAvailability(genreFull));
+      const fullGenre = args[1];
+      console.log(genreFullAvailability(fullGenre));
       break;
     case "genrePartialAvailability":
-      const genrePartial = args[1];
-      console.log(genrePartialAvailability(genrePartial));
+      const partialGenre = args[1];
+      console.log(genrePartialAvailability(partialGenre));
       break;
     case "getCountBy":
       const propertyCount = args[1];
@@ -212,4 +262,3 @@ function main() {
 }
 
 main();
-
