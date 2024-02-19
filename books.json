@@ -26,15 +26,6 @@
         "stock": 5
     },
     {
-        "title": "The Alchemist",
-        "ISBN": "9780062315007",
-        "year": 1988,
-        "genre": "Fantasy",
-        "author": "Paulo Coelho",
-        "stock": 3,
-        "publisher": "HarperOne"
-    },
-    {
         "title": "Educated",
         "ISBN": "9780399590504",
         "year": 2018,
@@ -69,15 +60,6 @@
         "author": "Erin Morgenstern",
         "stock": 5,
         "publisher": "Anchor Books"
-    },
-    {
-        "title": "1984",
-        "ISBN": "9780451524935",
-        "year": 1949,
-        "genre": "Dystopian",
-        "author": "George Orwell",
-        "stock": 8,
-        "publisher": "Plume"
     },
     {
         "title": "The Martian",
@@ -170,12 +152,12 @@
         "publisher": "Crown Business"
     },
     {
-        "title": "Thinking, Fast and Slow",
-        "ISBN": "9780374533557",
-        "year": 2011,
-        "genre": "Psychology",
-        "author": "Daniel Kahneman",
-        "stock": 5,
-        "publisher": "Farrar, Straus and Giroux"
+        "title": "Coraline",
+        "ISBN": "994984664656",
+        "year": 2009,
+        "genre": "Suspense",
+        "author": "Gaiman",
+        "stock": 3,
+        "publisher": "Laika"
     }
 ]
